@@ -1,0 +1,19 @@
+
+# Data manipulation
+numpy
+pandas
+
+# Data visualization
+matplotlib
+seaborn
+
+# Machine learning utilities
+scikit-learn
+
+# Jupyter Notebook
+jupyter
+ipykernel
+
+# Dataset handling
+datasets
+huggingface_hub
