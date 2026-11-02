@@ -22,10 +22,24 @@ __pycache__/
 *.h5
 *.pkl
 
+# Model artifacts
+artifacts/tokenizer/*
+artifacts/checkpoints/*
+artifacts/trained_models/*
+
 # Dataset files
 data/raw/*
+data/external/*
 data/interim/*
 data/processed/*
+
+# Logs
+logs/*
+*.log
+
+# React
+frontend/node_modules/
+frontend/dist/
 
 # VS Code
 .vscode/
