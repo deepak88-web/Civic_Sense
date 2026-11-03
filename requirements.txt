@@ -23,3 +23,6 @@ ipykernel
 datasets
 huggingface_hub
 
+# Word embedding experiments
+gensim
+
