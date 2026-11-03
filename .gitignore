@@ -22,6 +22,12 @@ __pycache__/
 *.h5
 *.pkl
 
+# Large generated model artifacts
+models/embeddings/*.model
+models/embeddings/*.npy
+models/preprocessing/tokenized_data.npz
+
+
 # Model artifacts
 artifacts/tokenizer/*
 artifacts/checkpoints/*
