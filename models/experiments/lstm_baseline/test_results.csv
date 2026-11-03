@@ -1,0 +1,6 @@
+Metric,Score
+Test Accuracy,0.8192090395480226
+Macro Precision,0.7196677633242764
+Macro Recall,0.6963566991822518
+Macro F1-score,0.6976940683749092
+Weighted F1-score,0.8158031782319974
