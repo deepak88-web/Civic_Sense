@@ -7,8 +7,13 @@ pandas
 matplotlib
 seaborn
 
-# Machine learning utilities
+# Machine learning & Deep Learning utilities
 scikit-learn
+tensorflow
+
+# Language detection utility
+langdetect
+
 
 # Jupyter Notebook
 jupyter
@@ -18,4 +23,3 @@ ipykernel
 datasets
 huggingface_hub
 
-langdetect
