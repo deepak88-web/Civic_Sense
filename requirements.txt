@@ -17,3 +17,5 @@ ipykernel
 # Dataset handling
 datasets
 huggingface_hub
+
+langdetect
