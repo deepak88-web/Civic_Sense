@@ -1,0 +1,13 @@
+,0
+Animal Management,LSTM
+Civic Infrastructure and Encroachment,LSTM
+Drainage and Sewerage,LSTM
+Electricity and Utilities,BiLSTM
+Environment and Public Spaces,Attention-BiLSTM
+Public Safety,Attention-BiLSTM
+Public Sanitation,LSTM
+Road Infrastructure,Attention-BiLSTM
+Street Lighting,LSTM
+Traffic and Transport,BiLSTM
+Waste Management,Attention-BiLSTM
+Water Supply,LSTM
