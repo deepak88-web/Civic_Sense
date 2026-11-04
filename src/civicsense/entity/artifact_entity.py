@@ -83,7 +83,7 @@ class PredictionArtifact:
 
 
 @dataclass
-class PredictionArtifact:
+class BatchPredictionArtifact:
 
     predictions_file_path: Path
     low_confidence_file_path: Path

@@ -164,7 +164,7 @@ class ModelEvaluationConfig:
 
 
 @dataclass
-class PredictionConfig:
+class BatchPredictionConfig:
 
     root_dir: Path = field(
         default_factory=lambda: PROJECT_ROOT / "artifacts/prediction"
