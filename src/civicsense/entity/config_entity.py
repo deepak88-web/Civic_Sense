@@ -83,6 +83,11 @@ class DataTransformationConfig:
         default_factory=lambda: PROJECT_ROOT / "artifacts/data_transformation/word2vec_embedding_matrix.npy"
     )
 
+    word2vec_model_path: Path = field(
+        default_factory=lambda: PROJECT_ROOT
+        / "artifacts/data_transformation/civicsense_word2vec.model"
+    )
+
     # Data splitting configuration
     test_size: float = 0.15
     validation_size: float = 0.15
