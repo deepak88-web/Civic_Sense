@@ -73,6 +73,21 @@ class PredictionPipeline:
                 )
             )
 
+            # Verify required saved artifacts exist
+            required_artifacts = [
+                trainer_artifact.trained_model_file_path,
+                transformation_artifact.tokenizer_file_path,
+                transformation_artifact.label_encoder_file_path,
+                transformation_artifact.max_sequence_length_file_path
+            ]
+
+            for artifact_path in required_artifacts:
+                if not artifact_path.is_file():
+                    raise FileNotFoundError(
+                        f"Required model artifact not found: {artifact_path}. "
+                        "Please train the model first."
+                    )
+
             # Step 4: Initialize batch prediction
             batch_prediction = BatchPrediction(
                 prediction_config=BatchPredictionConfig(),
@@ -96,4 +111,4 @@ class PredictionPipeline:
             logger.exception(
                 "Error occurred in prediction pipeline."
             )
-            raise CivicSenseException(e, sys)
+            raise CivicSenseException(e, sys) from e

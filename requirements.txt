@@ -29,3 +29,11 @@ gensim
 pyYAML 
 dill
 
+# Backend API
+fastapi
+uvicorn[standard]
+python-multipart
+
+# API testing
+httpx
+

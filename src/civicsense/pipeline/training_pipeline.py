@@ -95,4 +95,4 @@ class TrainingPipeline:
             logger.exception(
                 "Error occurred in training pipeline."
             )
-            raise CivicSenseException(e, sys)
+            raise CivicSenseException(e, sys) from e
