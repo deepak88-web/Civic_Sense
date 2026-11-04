@@ -1,32 +1,41 @@
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-function Home() {
-  return <h1 className="text-3xl font-bold">CivicSense Home</h1>;
-}
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 
-function SinglePrediction() {
-  return <h1 className="text-3xl font-bold">Single Prediction</h1>;
-}
+import Home from "./pages/Home";
+import SinglePrediction from "./pages/SinglePrediction";
+import BatchPrediction from "./pages/BatchPrediction";
 
-function BatchPrediction() {
-  return <h1 className="text-3xl font-bold">Batch Prediction</h1>;
-}
+
 
 function NotFound() {
-  return <h1 className="text-2xl font-bold">404 - Page Not Found</h1>;
+  return (
+    <h1 className="text-3xl font-bold text-white">
+      404 - Page Not Found
+    </h1>
+  );
 }
 
 function App() {
   return (
     <BrowserRouter>
-      <div className="min-h-screen bg-slate-950 p-8 text-white">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/predict" element={<SinglePrediction />} />
-          <Route path="/batch-predict" element={<BatchPrediction />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+      <div className="flex min-h-screen flex-col bg-slate-950">
+
+        <Navbar />
+
+        <main className="mx-auto w-full max-w-7xl flex-1 px-6 py-12">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/predict" element={<SinglePrediction />} />
+            <Route path="/batch-predict" element={<BatchPrediction />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </main>
+
+        <Footer />
+
       </div>
     </BrowserRouter>
   );
