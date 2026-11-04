@@ -56,3 +56,6 @@ Thumbs.db
 
 # Generated package metadata
 *.egg-info/
+
+# Generated pipeline artifacts
+artifacts/
