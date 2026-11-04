@@ -79,3 +79,15 @@ class PredictionArtifact:
 
     total_predictions: int
     low_confidence_count: int
+
+
+
+@dataclass
+class PredictionArtifact:
+
+    predictions_file_path: Path
+    low_confidence_file_path: Path
+    prediction_summary_file_path: Path
+
+    total_predictions: int
+    low_confidence_count: int

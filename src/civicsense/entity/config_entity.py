@@ -160,3 +160,33 @@ class ModelEvaluationConfig:
     confusion_matrix_path: Path = field(
         default_factory=lambda: PROJECT_ROOT / "artifacts/model_evaluation/confusion_matrix.csv"
     )
+
+
+
+@dataclass
+class PredictionConfig:
+
+    root_dir: Path = field(
+        default_factory=lambda: PROJECT_ROOT / "artifacts/prediction"
+    )
+
+    predictions_file_path: Path = field(
+        default_factory=lambda: PROJECT_ROOT
+        / "artifacts/prediction/civicsense_batch_predictions.csv"
+    )
+
+    low_confidence_file_path: Path = field(
+        default_factory=lambda: PROJECT_ROOT
+        / "artifacts/prediction/civicsense_low_confidence_review.csv"
+    )
+
+    prediction_summary_path: Path = field(
+        default_factory=lambda: PROJECT_ROOT
+        / "artifacts/prediction/prediction_summary.csv"
+    )
+
+    batch_size: int = 64
+
+    high_confidence_threshold: float = 0.80
+    medium_confidence_threshold: float = 0.60
+
