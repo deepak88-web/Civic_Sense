@@ -1,0 +1,61 @@
+
+# ==========================================
+# CIVICSENSE - DATA CONFIGURATION
+# ==========================================
+
+data_ingestion:
+  root_dir: artifacts/data_ingestion
+
+  supervised_data_path: data/interim/civicsense_supervised_cleaned.csv
+  prediction_data_path: data/interim/civicsense_prediction_cleaned.csv
+
+  ingested_supervised_path: artifacts/data_ingestion/supervised.csv
+  ingested_prediction_path: artifacts/data_ingestion/prediction.csv
+
+
+data_validation:
+  root_dir: artifacts/data_validation
+  status_file_path: artifacts/data_validation/status.txt
+
+  required_supervised_columns:
+    - cleaned_text
+    - target_category
+    - source_dataset
+
+  required_prediction_columns:
+    - cleaned_text
+    - detectedLanguage
+
+  expected_num_classes: 12
+
+
+data_transformation:
+  root_dir: artifacts/data_transformation
+
+  transformed_data_path: artifacts/data_transformation/tokenized_data.npz
+  tokenizer_path: artifacts/data_transformation/tokenizer.pkl
+  label_encoder_path: artifacts/data_transformation/label_encoder.pkl
+  max_len_path: artifacts/data_transformation/max_len.npy
+
+  embedding_matrix_path: artifacts/data_transformation/word2vec_embedding_matrix.npy
+  word2vec_model_path: artifacts/data_transformation/civicsense_word2vec.model
+
+  # Data splitting
+  test_size: 0.15
+  validation_size: 0.15
+  random_state: 42
+
+  # Tokenization
+  max_sequence_length: 156
+  oov_token: "<OOV>"
+  padding_type: post
+  truncating_type: post
+
+  # Word2Vec
+  embedding_dimension: 100
+  window_size: 5
+  min_word_count: 2
+  workers: 4
+  sg: 1
+  word2vec_epochs: 10
+  word2vec_seed: 42

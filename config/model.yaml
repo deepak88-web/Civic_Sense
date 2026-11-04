@@ -1,0 +1,25 @@
+
+# ==========================================
+# CIVICSENSE - MODEL CONFIGURATION
+# ==========================================
+
+model:
+  name: LSTM
+  architecture: LSTM
+
+  # Embedding layer
+  embedding_dimension: 100
+  embedding_trainable: true
+  mask_zero: true
+
+  # LSTM architecture
+  lstm_units: 64
+  dropout_rate: 0.3
+
+  # Output layer
+  num_classes: 12
+  output_activation: softmax
+
+  # Saved model
+  root_dir: artifacts/model_trainer
+  model_path: artifacts/model_trainer/lstm_word2vec.keras

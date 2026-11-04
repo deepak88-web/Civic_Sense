@@ -1,0 +1,44 @@
+
+# ==========================================
+# CIVICSENSE - TRAINING CONFIGURATION
+# ==========================================
+
+training:
+  root_dir: artifacts/model_trainer
+  training_history_path: artifacts/model_trainer/training_history.csv
+
+  # Training parameters
+  epochs: 15
+  batch_size: 64
+  optimizer: adam
+  loss: sparse_categorical_crossentropy
+
+  # Early stopping
+  early_stopping:
+    monitor: val_loss
+    patience: 3
+    restore_best_weights: true
+
+  # Reproducibility
+  random_seed: 42
+
+
+evaluation:
+  root_dir: artifacts/model_evaluation
+
+  metrics_file_path: artifacts/model_evaluation/test_metrics.json
+  classification_report_path: artifacts/model_evaluation/classification_report.csv
+  confusion_matrix_path: artifacts/model_evaluation/confusion_matrix.csv
+
+
+prediction:
+  root_dir: artifacts/prediction
+
+  predictions_file_path: artifacts/prediction/civicsense_batch_predictions.csv
+  low_confidence_file_path: artifacts/prediction/civicsense_low_confidence_review.csv
+  prediction_summary_path: artifacts/prediction/prediction_summary.csv
+
+  batch_size: 64
+
+  high_confidence_threshold: 0.80
+  medium_confidence_threshold: 0.60
