@@ -1,0 +1,3 @@
+model: LSTM
+embedding_dimension: 100
+max_length: 156
