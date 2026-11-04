@@ -1,5 +1,6 @@
 
 import argparse
+import sys
 
 from civicsense.logger import get_logger
 
@@ -55,6 +56,7 @@ def main():
             )
 
             print("\nPrediction completed successfully!")
+
             print(
                 "Total predictions:",
                 prediction_artifact.total_predictions
@@ -70,12 +72,16 @@ def main():
                 prediction_artifact.predictions_file_path
             )
 
-    except Exception as e:
+        logger.info("CivicSense execution completed successfully.")
+
+    except Exception:
 
         logger.exception("CivicSense execution failed.")
 
         print("\nCivicSense execution failed.")
-        print("Error:", str(e))
+        print("Check logs/civicsense.log for details.")
+
+        sys.exit(1)
 
 
 if __name__ == "__main__":
