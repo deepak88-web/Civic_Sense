@@ -165,3 +165,107 @@ class PredictionService:
                 "Error occurred during individual complaint prediction."
             )
             raise
+
+
+    
+    def predict_batch(self, complaint_texts: list[str]) -> list[dict]:
+        """
+        Generate predictions for multiple civic complaints.
+        Reuses the already-loaded model and preprocessing artifacts.
+        """
+
+        try:
+            if not complaint_texts:
+                raise ValueError("No complaints were provided.")
+
+            # 1. Clean all complaint texts
+            cleaned_texts = [
+                clean_text(text) for text in complaint_texts
+            ]
+
+            # 2. Validate complaint texts
+            for index, text in enumerate(cleaned_texts):
+                if not text:
+                    raise ValueError(
+                        f"Complaint at row {index + 1} is empty."
+                    )
+
+            # 3. Load artifacts if not already loaded
+            self.load_artifacts()
+
+            # 4. Convert complaints into sequences
+            sequences = self.tokenizer.texts_to_sequences(
+                cleaned_texts
+            )
+
+            # 5. Apply the same padding used during training
+            padded_sequences = pad_sequences(
+                sequences,
+                maxlen=self.max_sequence_length,
+                padding=self.prediction_config.padding_type,
+                truncating=self.prediction_config.truncating_type
+            )
+
+            # 6. Generate prediction probabilities
+            probabilities = self.model.predict(
+                padded_sequences,
+                batch_size=self.prediction_config.batch_size,
+                verbose=0
+            )
+
+            # 7. Identify predicted categories
+            predicted_indices = np.argmax(
+                probabilities,
+                axis=1
+            )
+
+            predicted_categories = (
+                self.label_encoder.inverse_transform(
+                    predicted_indices
+                )
+            )
+
+            # 8. Calculate confidence scores
+            confidence_scores = np.max(
+                probabilities,
+                axis=1
+            )
+
+            # 9. Generate prediction results
+            results = []
+
+            for original_text, category, confidence in zip(
+                complaint_texts,
+                predicted_categories,
+                confidence_scores
+            ):
+
+                confidence = float(confidence)
+
+                if confidence >= self.prediction_config.high_confidence_threshold:
+                    status = "High"
+
+                elif confidence >= self.prediction_config.medium_confidence_threshold:
+                    status = "Medium"
+
+                else:
+                    status = "Low"
+
+                results.append({
+                    "complaint_text": original_text,
+                    "predicted_category": str(category),
+                    "confidence_score": confidence,
+                    "prediction_status": status
+                })
+
+            logger.info(
+                f"Batch prediction completed for {len(results)} complaints."
+            )
+
+            return results
+
+        except Exception:
+            logger.exception(
+                "Error occurred during batch prediction."
+            )
+            raise

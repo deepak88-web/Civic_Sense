@@ -31,3 +31,22 @@ class ComplaintPredictionResponse(BaseModel):
     )
 
     prediction_status: Literal["High", "Medium", "Low"]
+
+
+
+class BatchPredictionResponse(BaseModel):
+    """Summary of a completed batch prediction."""
+
+    total_complaints: int
+
+    high_confidence_count: int
+
+    medium_confidence_count: int
+
+    low_confidence_count: int
+
+    output_filename: str
+
+    message: str
+
+    download_url: str
