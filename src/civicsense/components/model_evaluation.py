@@ -49,7 +49,12 @@ class ModelEvaluation:
 
             config = self.model_evaluation_config
 
-            create_directories([str(config.root_dir)])
+            create_directories([
+                str(config.root_dir),
+                str(config.metrics_file_path.parent),
+                str(config.classification_report_path.parent),
+                str(config.confusion_matrix_path.parent)
+            ])
 
             # 1. Load the test dataset
             transformed_data = np.load(

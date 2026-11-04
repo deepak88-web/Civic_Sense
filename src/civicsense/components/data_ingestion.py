@@ -32,7 +32,11 @@ class DataIngestion:
             config = self.data_ingestion_config
 
             # Create artifact directory
-            create_directories([str(config.root_dir)])
+            create_directories([
+                str(config.root_dir),
+                str(config.ingested_supervised_path.parent),
+                str(config.ingested_prediction_path.parent)
+            ])
 
             # Check whether input files exist
             if not config.supervised_data_path.is_file():

@@ -40,7 +40,11 @@ class ModelTrainer:
 
             config = self.model_trainer_config
 
-            create_directories([str(config.root_dir)])
+            create_directories([
+                str(config.root_dir),
+                str(config.model_path.parent),
+                str(config.training_history_path.parent)
+            ])
 
             # 1. Load transformed datasets
             transformed_data = np.load(
@@ -87,8 +91,13 @@ class ModelTrainer:
                 num_classes=num_classes,
                 max_sequence_length=X_train.shape[1],
                 lstm_units=config.lstm_units,
-                dropout_rate=config.dropout_rate
-            )
+                dropout_rate=config.dropout_rate,
+                optimizer=config.optimizer,
+                loss=config.loss,
+                embedding_trainable=config.embedding_trainable,
+                mask_zero=config.mask_zero,
+                output_activation=config.output_activation
+            )   
 
             logger.info("LSTM model architecture created.")
 

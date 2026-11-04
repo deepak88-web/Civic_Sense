@@ -1,6 +1,4 @@
 
-import tensorflow as tf
-
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Embedding, LSTM, Dropout, Dense
 
@@ -10,7 +8,12 @@ def build_lstm_model(
     num_classes,
     max_sequence_length,
     lstm_units=64,
-    dropout_rate=0.3
+    dropout_rate=0.3,
+    optimizer="adam",
+    loss="sparse_categorical_crossentropy",
+    embedding_trainable=True,
+    mask_zero=True,
+    output_activation="softmax"
 ):
     """
     Build the LSTM classification model using
@@ -25,20 +28,20 @@ def build_lstm_model(
             input_dim=vocab_size,
             output_dim=embedding_dim,
             weights=[embedding_matrix],
-            mask_zero=True,
-            trainable=True
+            mask_zero=mask_zero,
+            trainable=embedding_trainable
         ),
 
         LSTM(lstm_units),
 
         Dropout(dropout_rate),
 
-        Dense(num_classes, activation="softmax")
+        Dense(num_classes, activation=output_activation)
     ])
 
     model.compile(
-        optimizer="adam",
-        loss="sparse_categorical_crossentropy",
+        optimizer=optimizer,
+        loss=loss,
         metrics=["accuracy"]
     )
 

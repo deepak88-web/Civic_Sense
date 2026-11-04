@@ -45,7 +45,13 @@ class BatchPrediction:
             logger.info("Batch prediction started.")
 
             config = self.prediction_config
-            create_directories([str(config.root_dir)])
+
+            create_directories([
+                str(config.root_dir),
+                str(config.predictions_file_path.parent),
+                str(config.low_confidence_file_path.parent),
+                str(config.prediction_summary_path.parent)
+            ])
 
             # 1. Load unseen prediction dataset
             prediction_df = pd.read_csv(
@@ -111,8 +117,8 @@ class BatchPrediction:
             X_prediction = pad_sequences(
                 prediction_sequences,
                 maxlen=max_len,
-                padding="post",
-                truncating="post"
+                padding=config.padding_type,
+                truncating=config.truncating_type
             )
 
             logger.info(

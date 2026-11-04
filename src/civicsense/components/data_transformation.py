@@ -44,7 +44,15 @@ class DataTransformation:
 
             config = self.data_transformation_config
 
-            create_directories([str(config.root_dir)])
+            create_directories([
+                str(config.root_dir),
+                str(config.transformed_data_path.parent),
+                str(config.tokenizer_path.parent),
+                str(config.label_encoder_path.parent),
+                str(config.max_len_path.parent),
+                str(config.embedding_matrix_path.parent),
+                str(config.word2vec_model_path.parent)
+            ])
 
             # 1. Load validated supervised dataset
             supervised_path = (

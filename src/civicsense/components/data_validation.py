@@ -31,7 +31,11 @@ class DataValidation:
             logger.info("Data validation started.")
 
             config = self.data_validation_config
-            create_directories([str(config.root_dir)])
+
+            create_directories([
+                str(config.root_dir),
+                str(config.status_file_path.parent)
+            ])
 
             supervised_path = (
                 self.data_ingestion_artifact.supervised_data_file_path
