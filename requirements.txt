@@ -1,39 +1,18 @@
 
-# Data manipulation
-numpy
-pandas
-
-# Data visualization
-matplotlib
-seaborn
-
-# Machine learning & Deep Learning utilities
-scikit-learn
-tensorflow
-
-# Language detection utility
-langdetect
-
-
-# Jupyter Notebook
-jupyter
-ipykernel
-
-# Dataset handling
-datasets
-huggingface_hub
-
-# Word embedding experiments
-gensim
-
-pyYAML 
-dill
-
 # Backend API
-fastapi
-uvicorn[standard]
-python-multipart
+fastapi==0.162.0
+uvicorn[standard]==0.54.0
+python-multipart==0.0.33
 
-# API testing
-httpx
+# Machine Learning and Deep Learning
+numpy==2.5.4
+pandas==3.1.0
+scikit-learn==1.9.1
+tensorflow==2.21.0
 
+# Configuration and serialization
+PyYAML==6.0.3
+dill==0.4.1
+
+# Install CivicSense local package
+-e .

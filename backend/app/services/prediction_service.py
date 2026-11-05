@@ -1,18 +1,14 @@
 
 import pickle
 import logging
+from pathlib import Path
 
 import numpy as np
 import tensorflow as tf
 
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 
-from civicsense.entity.config_entity import (
-    DataTransformationConfig,
-    ModelTrainerConfig,
-    BatchPredictionConfig
-)
-
+from civicsense.entity.config_entity import BatchPredictionConfig
 from civicsense.utils.text_utils import clean_text
 
 
@@ -22,7 +18,7 @@ logger = logging.getLogger(__name__)
 class PredictionService:
     """
     Service responsible for loading the trained CivicSense model
-    and generating predictions for individual complaints.
+    and generating predictions for individual and batch complaints.
     """
 
     def __init__(self):
@@ -32,58 +28,77 @@ class PredictionService:
         self.label_encoder = None
         self.max_sequence_length = None
 
-        self.transformation_config = DataTransformationConfig()
-        self.model_config = ModelTrainerConfig()
+        # Production model artifact directory
+        self.model_artifact_dir = (
+            Path(__file__).resolve().parents[1] / "model_artifacts"
+        )
+
+        self.model_path = (
+            self.model_artifact_dir / "lstm_word2vec.keras"
+        )
+
+        self.tokenizer_path = (
+            self.model_artifact_dir / "tokenizer.pkl"
+        )
+
+        self.label_encoder_path = (
+            self.model_artifact_dir / "label_encoder.pkl"
+        )
+
+        self.max_len_path = (
+            self.model_artifact_dir / "max_len.npy"
+        )
+
         self.prediction_config = BatchPredictionConfig()
 
     def load_artifacts(self):
         """
-        Load the trained model and preprocessing artifacts.
-        Artifacts are loaded only once per service instance.
+        Load production model artifacts only once.
         """
 
         if self.model is not None:
             return
 
-        logger.info("Loading CivicSense model artifacts.")
+        logger.info(
+            "Loading CivicSense production model artifacts."
+        )
 
         required_paths = [
-            self.model_config.model_path,
-            self.transformation_config.tokenizer_path,
-            self.transformation_config.label_encoder_path,
-            self.transformation_config.max_len_path
+            self.model_path,
+            self.tokenizer_path,
+            self.label_encoder_path,
+            self.max_len_path
         ]
 
+        # Verify that all required files exist
         for path in required_paths:
+
             if not path.is_file():
                 raise FileNotFoundError(
-                    f"Required model artifact not found: {path}. "
-                    "Please train the model first."
+                    f"Required model artifact not found: {path}"
                 )
 
         # Load trained LSTM model
         self.model = tf.keras.models.load_model(
-            self.model_config.model_path
+            self.model_path
         )
 
-        # Load saved tokenizer
-        with open(
-            self.transformation_config.tokenizer_path, "rb"
-        ) as file:
+        # Load tokenizer
+        with open(self.tokenizer_path, "rb") as file:
             self.tokenizer = pickle.load(file)
 
-        # Load saved label encoder
-        with open(
-            self.transformation_config.label_encoder_path, "rb"
-        ) as file:
+        # Load label encoder
+        with open(self.label_encoder_path, "rb") as file:
             self.label_encoder = pickle.load(file)
 
         # Load maximum sequence length
         self.max_sequence_length = int(
-            np.load(self.transformation_config.max_len_path)
+            np.load(self.max_len_path)
         )
 
-        logger.info("CivicSense model artifacts loaded successfully.")
+        logger.info(
+            "CivicSense production artifacts loaded successfully."
+        )
 
     def predict_complaint(self, complaint_text: str) -> dict:
         """
@@ -127,9 +142,11 @@ class PredictionService:
                 np.argmax(probabilities[0])
             )
 
-            predicted_category = self.label_encoder.inverse_transform(
-                [predicted_index]
-            )[0]
+            predicted_category = (
+                self.label_encoder.inverse_transform(
+                    [predicted_index]
+                )[0]
+            )
 
             # 7. Calculate confidence score
             confidence_score = float(
@@ -137,10 +154,16 @@ class PredictionService:
             )
 
             # 8. Determine confidence status
-            if confidence_score >= self.prediction_config.high_confidence_threshold:
+            if (
+                confidence_score
+                >= self.prediction_config.high_confidence_threshold
+            ):
                 prediction_status = "High"
 
-            elif confidence_score >= self.prediction_config.medium_confidence_threshold:
+            elif (
+                confidence_score
+                >= self.prediction_config.medium_confidence_threshold
+            ):
                 prediction_status = "Medium"
 
             else:
@@ -161,13 +184,13 @@ class PredictionService:
             }
 
         except Exception:
+
             logger.exception(
                 "Error occurred during individual complaint prediction."
             )
+
             raise
 
-
-    
     def predict_batch(self, complaint_texts: list[str]) -> list[dict]:
         """
         Generate predictions for multiple civic complaints.
@@ -175,8 +198,11 @@ class PredictionService:
         """
 
         try:
+
             if not complaint_texts:
-                raise ValueError("No complaints were provided.")
+                raise ValueError(
+                    "No complaints were provided."
+                )
 
             # 1. Clean all complaint texts
             cleaned_texts = [
@@ -185,6 +211,7 @@ class PredictionService:
 
             # 2. Validate complaint texts
             for index, text in enumerate(cleaned_texts):
+
                 if not text:
                     raise ValueError(
                         f"Complaint at row {index + 1} is empty."
@@ -242,10 +269,16 @@ class PredictionService:
 
                 confidence = float(confidence)
 
-                if confidence >= self.prediction_config.high_confidence_threshold:
+                if (
+                    confidence
+                    >= self.prediction_config.high_confidence_threshold
+                ):
                     status = "High"
 
-                elif confidence >= self.prediction_config.medium_confidence_threshold:
+                elif (
+                    confidence
+                    >= self.prediction_config.medium_confidence_threshold
+                ):
                     status = "Medium"
 
                 else:
@@ -265,7 +298,9 @@ class PredictionService:
             return results
 
         except Exception:
+
             logger.exception(
                 "Error occurred during batch prediction."
             )
+
             raise

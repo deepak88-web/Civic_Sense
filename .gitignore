@@ -59,3 +59,9 @@ Thumbs.db
 
 # Generated pipeline artifacts
 artifacts/
+
+# Include production model artifacts for deployment
+!backend/app/model_artifacts/
+!backend/app/model_artifacts/*.keras
+!backend/app/model_artifacts/*.pkl
+!backend/app/model_artifacts/*.npy
