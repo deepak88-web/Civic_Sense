@@ -1,6 +1,8 @@
 
 import { useRef, useState } from "react";
 import API from "../services/api";
+import Loader from "../components/Loader";
+import { getApiErrorMessage } from "../services/errorHandler";
 
 const BatchPrediction = () => {
   const [file, setFile] = useState(null);
@@ -54,10 +56,7 @@ const BatchPrediction = () => {
 
       setResult(response.data);
     } catch (err) {
-      setError(
-        err.response?.data?.detail ||
-          "Unable to process the CSV file. Please try again."
-      );
+      setError(getApiErrorMessage(err));
     } finally {
       setLoading(false);
     }
@@ -227,7 +226,11 @@ const BatchPrediction = () => {
             disabled={loading || !file}
             className="mt-7 flex w-full items-center justify-center gap-2 rounded-xl bg-teal-600 px-6 py-3.5 font-semibold text-white transition hover:bg-teal-500 disabled:cursor-not-allowed disabled:opacity-50"
           >
-            {loading ? "Processing Complaints..." : "Upload & Predict →"}
+            {loading ? (
+              <Loader message="Processing CSV..." />
+            ) : (
+              "Upload and Predict"
+            )}
           </button>
         </form>
       </div>
