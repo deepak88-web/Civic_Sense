@@ -1,6 +1,8 @@
 
 import { useState } from "react";
 import API from "../services/api";
+import Loader from "../components/Loader";
+import { getApiErrorMessage } from "../services/errorHandler";
 
 const SinglePrediction = () => {
   const [complaint, setComplaint] = useState("");
@@ -27,11 +29,8 @@ const SinglePrediction = () => {
 
       setPrediction(response.data);
     } catch (err) {
-      setError(
-        err.response?.data?.detail ||
-          "Unable to process your complaint. Please try again."
-      );
-    } finally {
+        setError(getApiErrorMessage(err));
+      } finally {
       setLoading(false);
     }
   };
@@ -95,7 +94,11 @@ const SinglePrediction = () => {
             disabled={loading}
             className="mt-7 flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 py-3.5 font-semibold text-white transition hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {loading ? "Analyzing Complaint..." : "Predict Complaint Category →"}
+            {loading ? (
+              <Loader message="Analyzing..." />
+            ) : (
+              "Predict Complaint Category →"
+            )}
           </button>
         </form>
       </div>
