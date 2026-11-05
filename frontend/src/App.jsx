@@ -7,16 +7,8 @@ import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import SinglePrediction from "./pages/SinglePrediction";
 import BatchPrediction from "./pages/BatchPrediction";
+import NotFound from "./pages/NotFound";
 
-
-
-function NotFound() {
-  return (
-    <h1 className="text-3xl font-bold text-white">
-      404 - Page Not Found
-    </h1>
-  );
-}
 
 function App() {
   return (
